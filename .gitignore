@@ -1,0 +1,29 @@
+# Flutter (To_do_Flutter/)
+To_do_Flutter/.dart_tool/
+To_do_Flutter/.flutter-plugins
+To_do_Flutter/.flutter-plugins-dependencies
+To_do_Flutter/.packages
+To_do_Flutter/build/
+To_do_Flutter/ios/Flutter/Generated.xcconfig
+To_do_Flutter/ios/Pods/
+To_do_Flutter/.idea/
+To_do_Flutter/.vscode/
+To_do_Flutter/pubspec.lock
+
+# Java/Spring Boot (To_do_Java/)
+To_do_Java/target/
+To_do_Java/.idea/
+To_do_Java/.mvn/
+To_do_Java/.gradle/
+To_do_Java/build/
+To_do_Java/.classpath
+To_do_Java/.project
+To_do_Java/.settings/
+
+# System/editor files
+*.log
+*.tmp
+.DS_Store
+*.iml
+*.swp
+*.swo
