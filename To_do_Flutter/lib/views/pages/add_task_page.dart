@@ -19,11 +19,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
         "${endDate.year.toString().padLeft(4, '0')}-${endDate.month.toString().padLeft(2, '0')}-${endDate.day.toString().padLeft(2, '0')}";
     Map<String, dynamic> taskData = {
       'title': title,
-      'endDate': formattedEndDate,
+      'endingDate': formattedEndDate,
     };
 
     return http.post(
-      Uri.parse('localhost:8080/api/addTask'),
+      Uri.parse('http://10.0.2.2:8080/api/addTask'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -50,6 +50,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           child: Column(
             children: [
               TextField(
+                controller: nameFieldController,
                 decoration: InputDecoration(
                   hintText: 'Nazwa',
                   border: OutlineInputBorder(
@@ -90,6 +91,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               ElevatedButton(
                   onPressed: () {
                     Task task = Task(nameFieldController.text, selectedDate);
+                    createTask(task.title, task.endingDate);
                   },
                   child: Text('Dodaj zadanie'))
             ],
