@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_flutter/model/Task.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({super.key});
@@ -11,6 +13,23 @@ class AddTaskPage extends StatefulWidget {
 class _AddTaskPageState extends State<AddTaskPage> {
   TextEditingController nameFieldController = TextEditingController();
   DateTime selectedDate = DateTime.now();
+
+  Future<http.Response> createTask(String title, DateTime endDate) {
+    String formattedEndDate =
+        "${endDate.year.toString().padLeft(4, '0')}-${endDate.month.toString().padLeft(2, '0')}-${endDate.day.toString().padLeft(2, '0')}";
+    Map<String, dynamic> taskData = {
+      'title': title,
+      'endDate': formattedEndDate,
+    };
+
+    return http.post(
+      Uri.parse('localhost:8080/api/addTask'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(taskData),
+    );
+  }
 
   @override
   void dispose() {
