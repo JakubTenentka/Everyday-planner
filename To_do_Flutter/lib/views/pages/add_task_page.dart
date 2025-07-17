@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:to_do_flutter/model/Task.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -90,8 +89,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               ),
               ElevatedButton(
                   onPressed: () {
-                    Task task = Task(nameFieldController.text, selectedDate);
-                    createTask(task.title, task.endingDate);
+                    createTask(nameFieldController.text, selectedDate);
                   },
                   child: Text('Dodaj zadanie'))
             ],

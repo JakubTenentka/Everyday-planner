@@ -7,7 +7,7 @@ class TaskCardWidget extends StatefulWidget {
   const TaskCardWidget({super.key, required this.taskTitle, required this.endingDate});
 
   final String taskTitle;
-  final String endingDate;
+  final DateTime endingDate;
 
   @override
   State<TaskCardWidget> createState() => _TaskCardWidgetState();
@@ -38,7 +38,7 @@ class _TaskCardWidgetState extends State<TaskCardWidget> {
                   SizedBox(
                     height: 5.0,
                   ),
-                  Text(widget.endingDate),
+                  Text(widget.endingDate.toString()),
                 ],
               ),
               Checkbox(
