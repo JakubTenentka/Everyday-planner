@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_flutter/views/pages/add_task_page.dart';
+import 'package:to_do_flutter/views/widgets/task_card_widget.dart';
 
-class WelcomePage extends StatelessWidget {
+class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
 
+  @override
+  State<WelcomePage> createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,14 +27,17 @@ class WelcomePage extends StatelessWidget {
           child: Column(
             children: [
               ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        return AddTaskPage();
-                      },
-                    ));
-                  },
-                  child: Text('Dodaj zadanie'))
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return AddTaskPage();
+                    },
+                  ));
+                },
+                child: Text('Dodaj zadanie'),
+              ),
+              TaskCardWidget(taskTitle: 'Testowy tytuł', endingDate: '2025-05-05'),
+              TaskCardWidget(taskTitle: 'Testowy tytuł', endingDate: '2025-05-05'),
             ],
           ),
         ),
