@@ -1,13 +1,14 @@
 package org.project.to_do_java.services;
 
-import org.apache.coyote.Response;
 import org.project.to_do_java.model.Task;
 import org.project.to_do_java.repositories.TaskRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
+
+import java.util.List;
+
 
 @Service
 public class TaskService {
@@ -21,5 +22,9 @@ public class TaskService {
   public ResponseEntity<Task> addTask(Task task){
        Task savedTask = taskRepository.save(task);
        return ResponseEntity.status(HttpStatus.CREATED).body(savedTask);
+  }
+
+  public List<Task> returnTasks(){
+      return taskRepository.findAll();
   }
 }
