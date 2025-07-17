@@ -5,7 +5,7 @@ import 'package:to_do_flutter/views/pages/add_task_page.dart';
 import 'package:to_do_flutter/views/widgets/task_card_widget.dart';
 import 'package:http/http.dart' as http;
 
-import '../../model/Task.dart';
+import '../../model/task_class.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
@@ -15,7 +15,13 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
-  late Future<List<Task>> futureTasks;
+  late Future<List<Task>> _futureTasks;
+
+  void _refreshTasks() {
+    setState(() {
+      _futureTasks = fetchAllTasks();
+    });
+  }
 
   Future<List<Task>> fetchAllTasks() async {
     final response = await http.get(
@@ -26,6 +32,8 @@ class _WelcomePageState extends State<WelcomePage> {
       List<Task> tasks =
           jsonList.map(((jsonItem) => Task.fromJson(jsonItem as Map<String, dynamic>))).toList();
       return tasks;
+    } else if (response.statusCode == 204) {
+      return [];
     } else {
       throw Exception('Failed to load Tasks');
     }
@@ -34,7 +42,7 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   void initState() {
     super.initState();
-    futureTasks = fetchAllTasks();
+    _futureTasks = fetchAllTasks();
   }
 
   @override
@@ -54,20 +62,38 @@ class _WelcomePageState extends State<WelcomePage> {
           child: Column(
             children: [
               ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (context) {
-                      return AddTaskPage();
-                    },
-                  ));
+                onPressed: () async {
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddTaskPage()),
+                  );
+                  if (result == true) {
+                    _refreshTasks();
+                  }
                 },
                 child: Text('Dodaj zadanie'),
               ),
               FutureBuilder(
-                future: futureTasks,
+                future: _futureTasks,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     final tasks = snapshot.data!;
+                    if (tasks.isEmpty) {
+                      return Column(
+                        children: [
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          Center(
+                            child: Text(
+                              'Dodaj swoje pierwsze zadanie!',
+                              style: TextStyle(fontSize: 18),
+                              textAlign: TextAlign.end,
+                            ),
+                          ),
+                        ],
+                      );
+                    }
                     return Column(
                       children: List.generate(tasks.length, (index) {
                         return TaskCardWidget(

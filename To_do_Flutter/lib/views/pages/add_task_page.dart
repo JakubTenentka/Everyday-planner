@@ -88,8 +88,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 height: 20.0,
               ),
               ElevatedButton(
-                  onPressed: () {
-                    createTask(nameFieldController.text, selectedDate);
+                  onPressed: () async {
+                    await createTask(nameFieldController.text, selectedDate);
+                    Navigator.pop(context, true);
                   },
                   child: Text('Dodaj zadanie'))
             ],
