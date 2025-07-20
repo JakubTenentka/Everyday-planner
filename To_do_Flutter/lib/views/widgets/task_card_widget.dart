@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-DateFormat dateFormat = DateFormat("yyyy-MM-dd");
-
 class TaskCardWidget extends StatefulWidget {
-  const TaskCardWidget({super.key, required this.taskTitle, required this.endingDate});
+  const TaskCardWidget(
+      {super.key, required this.taskTitle, required this.endingDate});
 
   final String taskTitle;
   final DateTime endingDate;
@@ -33,12 +32,14 @@ class _TaskCardWidgetState extends State<TaskCardWidget> {
                   Text(
                     widget.taskTitle,
                     style: TextStyle(
-                        fontSize: 16.0, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic),
                   ),
                   SizedBox(
                     height: 5.0,
                   ),
-                  Text(widget.endingDate.toString()),
+                  Text(DateFormat('yyyy-MM-dd').format(widget.endingDate)),
                 ],
               ),
               Checkbox(
