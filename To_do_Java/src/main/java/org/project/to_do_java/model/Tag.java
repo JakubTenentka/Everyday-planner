@@ -5,22 +5,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
 
 @Entity
 @Data
-@NoArgsConstructor
-public class Task {
+public class Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    private String title;
-    private LocalDate endingDate;
-    private ArrayList<Tag> tags;
+    private Long id;
+    private String tagName;
+
 
 
 }

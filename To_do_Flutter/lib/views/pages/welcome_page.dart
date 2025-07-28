@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:to_do_flutter/views/pages/add_task_page.dart';
 import 'package:to_do_flutter/views/widgets/task_card_widget.dart';
@@ -29,8 +28,9 @@ class _WelcomePageState extends State<WelcomePage> {
     );
     if (response.statusCode == 200) {
       List<dynamic> jsonList = jsonDecode(response.body);
-      List<Task> tasks =
-          jsonList.map(((jsonItem) => Task.fromJson(jsonItem as Map<String, dynamic>))).toList();
+      List<Task> tasks = jsonList
+          .map(((jsonItem) => Task.fromJson(jsonItem as Map<String, dynamic>)))
+          .toList();
       return tasks;
     } else if (response.statusCode == 204) {
       return [];
@@ -48,14 +48,6 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'Witaj w aplikacji ToDo',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Colors.lime,
-      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Center(
@@ -107,7 +99,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   }
                   return const CircularProgressIndicator();
                 },
-              )
+              ),
             ],
           ),
         ),

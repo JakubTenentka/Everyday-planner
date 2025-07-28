@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:to_do_flutter/views/pages/welcome_page.dart';
+import 'package:to_do_flutter/views/widgets/widget_tree.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,13 +16,14 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.amberAccent,
-            brightness: Brightness.light,
-          ),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.amberAccent,
+          brightness: Brightness.light,
         ),
-        home: WelcomePage());
+      ),
+      home: WidgetTree(),
+    );
   }
 }
