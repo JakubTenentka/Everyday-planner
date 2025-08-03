@@ -19,7 +19,7 @@ public class Task {
     private String title;
     private LocalDate endingDate;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Tag> tags = new ArrayList<>();
 
 

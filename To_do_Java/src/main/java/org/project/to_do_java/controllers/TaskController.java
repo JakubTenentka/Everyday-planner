@@ -1,13 +1,11 @@
 package org.project.to_do_java.controllers;
 
+import org.project.to_do_java.model.Tag;
 import org.project.to_do_java.model.Task;
 import org.project.to_do_java.services.TaskService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,4 +33,11 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.OK).body(tasks);
     }
 
-}
+    @PostMapping("/api/addTagsToTask/{taskId}")
+    public ResponseEntity<Task> addTagsToTask(@PathVariable Integer taskId, @RequestBody List<Tag> tags){
+        return taskService.addTagsToTask(taskId,tags);
+    }
+
+    }
+
+
