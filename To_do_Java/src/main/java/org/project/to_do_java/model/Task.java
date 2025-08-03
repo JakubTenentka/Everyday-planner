@@ -1,14 +1,12 @@
 package org.project.to_do_java.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -20,7 +18,9 @@ public class Task {
     private Integer id;
     private String title;
     private LocalDate endingDate;
-    private ArrayList<Tag> tags;
+
+    @ManyToMany
+    private List<Tag> tags = new ArrayList<>();
 
 
 }

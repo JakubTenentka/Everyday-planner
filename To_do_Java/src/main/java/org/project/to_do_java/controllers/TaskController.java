@@ -1,4 +1,4 @@
-package org.project.to_do_java;
+package org.project.to_do_java.controllers;
 
 import org.project.to_do_java.model.Task;
 import org.project.to_do_java.services.TaskService;
