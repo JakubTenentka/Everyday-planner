@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class TagWidget extends StatelessWidget {
-  const TagWidget({super.key});
+  const TagWidget({super.key, required this.id, required this.tagName});
+
+  final int id;
+  final String tagName;
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +13,7 @@ class TagWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         child: Container(
           color: Colors.amber[600],
-          child: const Center(child: Text('Entry A')),
+          child: Center(child: Text(tagName)),
         ),
       ),
     );
