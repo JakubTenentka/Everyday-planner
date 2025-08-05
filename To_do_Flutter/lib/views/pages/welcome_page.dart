@@ -93,6 +93,7 @@ class _WelcomePageState extends State<WelcomePage> {
                         return TaskCardWidget(
                           taskTitle: tasks[index].title,
                           endingDate: tasks[index].endingDate,
+                          tags: tasks[index].tags,
                         );
                       }),
                     );
