@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../data/notifiers.dart';
 import '../pages/tags_page.dart';
 import '../pages/welcome_page.dart';
@@ -16,14 +15,6 @@ class WidgetTree extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'Witaj w aplikacji ToDo',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Colors.lime,
-      ),
       body: ValueListenableBuilder(
         valueListenable: selectedpageNotifier,
         builder: (context, selectedPage, child) {

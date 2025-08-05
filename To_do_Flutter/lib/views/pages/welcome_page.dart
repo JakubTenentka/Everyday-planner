@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:to_do_flutter/views/pages/add_task_page.dart';
+import 'package:to_do_flutter/views/widgets/appbar_widget.dart';
 import 'package:to_do_flutter/views/widgets/task_card_widget.dart';
 import 'package:http/http.dart' as http;
 
@@ -48,6 +49,7 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppbarWidget(title: 'Twoje zadania'),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Center(
