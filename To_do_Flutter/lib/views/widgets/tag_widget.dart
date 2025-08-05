@@ -11,9 +11,12 @@ class TagWidget extends StatelessWidget {
     return GestureDetector(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
-        child: Container(
-          color: Colors.amber[600],
-          child: Center(child: Text(tagName)),
+        child: Card(
+          child: Center(
+              child: Text(
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+                  tagName)),
         ),
       ),
     );

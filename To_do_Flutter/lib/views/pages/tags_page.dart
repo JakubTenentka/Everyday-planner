@@ -57,6 +57,7 @@ class _TagsPageState extends State<TagsPage> {
         } else if (snapshot.hasData) {
           final tags = snapshot.data!;
           return GridView.count(
+              childAspectRatio: 2.0,
               padding: EdgeInsets.all(20.0),
               crossAxisSpacing: 15.0,
               mainAxisSpacing: 15.0,
