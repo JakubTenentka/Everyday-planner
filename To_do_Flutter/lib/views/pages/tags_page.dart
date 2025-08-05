@@ -34,10 +34,25 @@ class _TagsPageState extends State<TagsPage> {
     }
   }
 
+  Future<http.Response> createTag(String tagName) async {
+    Map<String, String> tagData = {'tagName': tagName};
+    return http.post(Uri.parse('http://10.0.2.2:8080/api/addTag'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(tagData));
+  }
+
   @override
   void initState() {
     super.initState();
     _futureTags = fetchAllTags();
+  }
+
+  void _refreshTags() {
+    setState(() {
+      _futureTags = fetchAllTags();
+    });
   }
 
   @override
@@ -79,6 +94,55 @@ class _TagsPageState extends State<TagsPage> {
           }
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _showAddTagDialog(context);
+        },
+        child: Icon(Icons.add),
+      ),
     );
+  }
+
+  Future<void> _showAddTagDialog(BuildContext context) {
+    TextEditingController controllerTagName = TextEditingController();
+    String? newTagName;
+    return showDialog<void>(
+        context: context,
+        builder: (BuildContext dialogContext) {
+          return AlertDialog(
+            title: Text('Podaj nazwę kategorii'),
+            content: TextField(
+              controller: controllerTagName,
+              decoration: InputDecoration(
+                hintText: 'Nazwa',
+              ),
+              onChanged: (value) {
+                newTagName = value.trim();
+              },
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () async {
+                  Navigator.of(dialogContext).pop();
+                },
+                child: Text('Anuluj'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  Navigator.of(dialogContext).pop();
+                  try {
+                    final http.Response response = await createTag(newTagName!);
+                    if (response.statusCode == 201) {
+                      _refreshTags();
+                    }
+                  } catch (e) {
+                    print(e);
+                  }
+                },
+                child: Text('Dodaj'),
+              )
+            ],
+          );
+        });
   }
 }
