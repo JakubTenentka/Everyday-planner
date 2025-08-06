@@ -24,16 +24,17 @@ class TaskService {
     }
   }
 
-  Future<http.Response> createTask(String title, DateTime endDate) {
+  Future<http.Response> createTask(
+      String title, DateTime endDate, Set<int> tagIds) {
     String formattedEndDate =
         "${endDate.year.toString().padLeft(4, '0')}-${endDate.month.toString().padLeft(2, '0')}-${endDate.day.toString().padLeft(2, '0')}";
     Map<String, dynamic> taskData = {
       'title': title,
       'endingDate': formattedEndDate,
     };
-
+    String tagParams = tagIds.map((id) => 'tagIds=$id').join('&');
     return http.post(
-      Uri.parse('http://10.0.2.2:8080/api/addTask'),
+      Uri.parse('http://10.0.2.2:8080/api/addTask?$tagParams'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

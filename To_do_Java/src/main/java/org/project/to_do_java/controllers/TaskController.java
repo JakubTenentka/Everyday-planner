@@ -2,25 +2,35 @@ package org.project.to_do_java.controllers;
 
 import org.project.to_do_java.model.Tag;
 import org.project.to_do_java.model.Task;
+import org.project.to_do_java.services.TagService;
 import org.project.to_do_java.services.TaskService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class TaskController {
 
     private final TaskService taskService;
+    private final TagService tagService;
 
 
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService, TagService tagService) {
         this.taskService = taskService;
+        this.tagService = tagService;
     }
 
     @PostMapping("/api/addTask")
-    public ResponseEntity<Task> addTask (@RequestBody Task task){
+    public ResponseEntity<Task> addTask (@RequestBody Task task, @RequestParam("tagIds") Set<Integer> tagIds) {
+        if (tagIds != null && !tagIds.isEmpty()) {
+            List<Tag> tags = tagService.returnTagsByIds(tagIds);
+            task.setTags(tags);
+        }
         return taskService.addTask(task);
     }
 

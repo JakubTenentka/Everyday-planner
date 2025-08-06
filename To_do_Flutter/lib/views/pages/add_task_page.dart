@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
+import 'package:to_do_flutter/services/tag_service.dart';
 import 'package:to_do_flutter/services/task_service.dart';
+import '../../model/tag_class.dart';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({super.key});
@@ -15,11 +14,20 @@ class _AddTaskPageState extends State<AddTaskPage> {
   TextEditingController nameFieldController = TextEditingController();
   DateTime selectedDate = DateTime.now();
   TaskService taskService = TaskService();
+  TagService tagService = TagService();
+  late Future<List<Tag>> _tagsFuture;
+  Set<int> selectedTagIds = {};
 
   @override
   void dispose() {
     nameFieldController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _tagsFuture = tagService.fetchAllTags();
   }
 
   @override
@@ -73,13 +81,48 @@ class _AddTaskPageState extends State<AddTaskPage> {
               SizedBox(
                 height: 20.0,
               ),
+              FutureBuilder(
+                  future: _tagsFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot.hasError) {
+                      return Text('Błąd ładowania tagów: ${snapshot.error}');
+                    } else if (snapshot.hasData) {
+                      final List<Tag> tags = snapshot.data!;
+                      if (tags.isEmpty) {
+                        return Text('Brak dostępnych tagów.');
+                      }
+                      return Wrap(
+                        spacing: 5.0,
+                        children: tags.map((Tag tag) {
+                          return FilterChip(
+                            label: Text(tag.tagName),
+                            selected: selectedTagIds.contains(tag.id),
+                            onSelected: (bool selected) {
+                              setState(() {
+                                if (selected) {
+                                  selectedTagIds.add(tag.id);
+                                } else {
+                                  selectedTagIds.remove(tag.id);
+                                }
+                              });
+                            },
+                          );
+                        }).toList(),
+                      );
+                    } else {
+                      return Text('Brak tagów');
+                    }
+                  }),
               ElevatedButton(
-                  onPressed: () async {
-                    await taskService.createTask(
-                        nameFieldController.text, selectedDate);
-                    Navigator.pop(context, true);
-                  },
-                  child: Text('Dodaj zadanie'))
+                onPressed: () async {
+                  await taskService.createTask(
+                      nameFieldController.text, selectedDate, selectedTagIds);
+                  Navigator.pop(context, true);
+                },
+                child: Text('Dodaj zadanie'),
+              )
             ],
           ),
         ),

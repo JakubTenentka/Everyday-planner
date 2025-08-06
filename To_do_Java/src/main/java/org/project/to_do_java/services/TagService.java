@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class TagService {
@@ -21,6 +22,9 @@ public class TagService {
     public ResponseEntity<Tag> addTag(Tag tag){
         Tag savedTag = tagRepository.save(tag);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedTag);
+    }
+    public List<Tag> returnTagsByIds(Set<Integer> tagIds) {
+        return tagRepository.findAllById(tagIds);
     }
 
 }
