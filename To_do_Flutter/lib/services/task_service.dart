@@ -7,9 +7,7 @@ import '../model/task_class.dart';
 class TaskService {
   final String baseUrl = 'http://10.0.2.2:8080';
 
-  Future<List<Task>> fetchAllTasks() async {
-    bool? isDone =
-        false; //TU MOŻNA AKTUALNIE STEROWAĆ WYŚWIETLANIEM TASKÓW ZROBIONYCH/NIEZROBIONYCH
+  Future<List<Task>> fetchAllTasks(bool? isDone) async {
     Uri uri;
 
     if (isDone == null) {

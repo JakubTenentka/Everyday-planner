@@ -117,6 +117,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   }),
               ElevatedButton(
                 onPressed: () async {
+                  //TODO Naprawić niedodawanie tasków które nie mają tagu!!
                   await taskService.createTask(
                       nameFieldController.text, selectedDate, selectedTagIds);
                   Navigator.pop(context, true);

@@ -13,19 +13,22 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
-  late Future<List<Task>> _futureTasks;
+  late Future<List<Task>> _futureNotDoneTasks;
+  late Future<List<Task>> _futureDoneTasks;
   TaskService taskService = TaskService();
 
   void _refreshTasks() {
     setState(() {
-      _futureTasks = taskService.fetchAllTasks();
+      _futureNotDoneTasks = taskService.fetchAllTasks(false);
+      _futureDoneTasks = taskService.fetchAllTasks(true);
     });
   }
 
   @override
   void initState() {
     super.initState();
-    _futureTasks = taskService.fetchAllTasks();
+    _futureNotDoneTasks = taskService.fetchAllTasks(false);
+    _futureDoneTasks = taskService.fetchAllTasks(true);
   }
 
   @override
@@ -49,42 +52,82 @@ class _WelcomePageState extends State<WelcomePage> {
                 },
                 child: Text('Dodaj zadanie'),
               ),
-              FutureBuilder(
-                future: _futureTasks,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    final tasks = snapshot.data!;
-                    if (tasks.isEmpty) {
-                      return Column(
-                        children: [
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                          Center(
-                            child: Text(
-                              'Dodaj swoje pierwsze zadanie!',
-                              style: TextStyle(fontSize: 18),
-                              textAlign: TextAlign.end,
+              SingleChildScrollView(
+                child: FutureBuilder(
+                  future: _futureNotDoneTasks,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final tasks = snapshot.data!;
+                      if (tasks.isEmpty) {
+                        return Column(
+                          children: [
+                            SizedBox(
+                              height: 10.0,
                             ),
-                          ),
-                        ],
-                      );
-                    }
-                    return Column(
-                      children: List.generate(tasks.length, (index) {
-                        return TaskCardWidget(
-                          taskTitle: tasks[index].title,
-                          endingDate: tasks[index].endingDate,
-                          tags: tasks[index].tags,
+                            Center(
+                              child: Text(
+                                'Dodaj swoje pierwsze zadanie!',
+                                style: TextStyle(fontSize: 18),
+                                textAlign: TextAlign.end,
+                              ),
+                            ),
+                          ],
                         );
-                      }),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
-                  }
-                  return const CircularProgressIndicator();
-                },
+                      }
+                      return Column(
+                        children: List.generate(tasks.length, (index) {
+                          return TaskCardWidget(
+                            taskTitle: tasks[index].title,
+                            endingDate: tasks[index].endingDate,
+                            tags: tasks[index].tags,
+                          );
+                        }),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
+                    return const CircularProgressIndicator();
+                  },
+                ),
               ),
+              ExpansionTile(title: Text('Zrobione'), children: [
+                FutureBuilder(
+                  future: _futureDoneTasks,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final tasks = snapshot.data!;
+                      if (tasks.isEmpty) {
+                        return Column(
+                          children: [
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            Center(
+                              child: Text(
+                                'Brak ukończonych zadań',
+                                style: TextStyle(fontSize: 18),
+                                textAlign: TextAlign.end,
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                      return Column(
+                        children: List.generate(tasks.length, (index) {
+                          return TaskCardWidget(
+                            taskTitle: tasks[index].title,
+                            endingDate: tasks[index].endingDate,
+                            tags: tasks[index].tags,
+                          );
+                        }),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
+                    return const CircularProgressIndicator();
+                  },
+                ),
+              ])
             ],
           ),
         ),
