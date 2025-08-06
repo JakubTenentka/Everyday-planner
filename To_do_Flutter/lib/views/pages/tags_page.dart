@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:to_do_flutter/services/tag_service.dart';
 import 'package:to_do_flutter/views/widgets/appbar_widget.dart';
 
 import '../../model/tag_class.dart';
@@ -17,41 +18,17 @@ class TagsPage extends StatefulWidget {
 class _TagsPageState extends State<TagsPage> {
   late Future<List<Tag>> _futureTags;
 
-  Future<List<Tag>> fetchAllTags() async {
-    final response = await http.get(
-      Uri.parse('http://10.0.2.2:8080/api/getTags'),
-    );
-    if (response.statusCode == 200) {
-      List<dynamic> jsonList = jsonDecode(response.body);
-      List<Tag> tags = jsonList
-          .map(((jsonItem) => Tag.fromJson(jsonItem as Map<String, dynamic>)))
-          .toList();
-      return tags;
-    } else if (response.statusCode == 204) {
-      return [];
-    } else {
-      throw Exception('Failed to load Tags');
-    }
-  }
-
-  Future<http.Response> createTag(String tagName) async {
-    Map<String, String> tagData = {'tagName': tagName};
-    return http.post(Uri.parse('http://10.0.2.2:8080/api/addTag'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(tagData));
-  }
+  TagService tagService = TagService();
 
   @override
   void initState() {
     super.initState();
-    _futureTags = fetchAllTags();
+    _futureTags = tagService.fetchAllTags();
   }
 
   void _refreshTags() {
     setState(() {
-      _futureTags = fetchAllTags();
+      _futureTags = tagService.fetchAllTags();
     });
   }
 
@@ -131,7 +108,8 @@ class _TagsPageState extends State<TagsPage> {
                 onPressed: () async {
                   Navigator.of(dialogContext).pop();
                   try {
-                    final http.Response response = await createTag(newTagName!);
+                    final http.Response response =
+                        await tagService.createTag(newTagName!);
                     if (response.statusCode == 201) {
                       _refreshTags();
                     }

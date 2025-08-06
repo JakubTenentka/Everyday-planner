@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:to_do_flutter/services/task_service.dart';
+
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({super.key});
 
@@ -12,23 +14,7 @@ class AddTaskPage extends StatefulWidget {
 class _AddTaskPageState extends State<AddTaskPage> {
   TextEditingController nameFieldController = TextEditingController();
   DateTime selectedDate = DateTime.now();
-
-  Future<http.Response> createTask(String title, DateTime endDate) {
-    String formattedEndDate =
-        "${endDate.year.toString().padLeft(4, '0')}-${endDate.month.toString().padLeft(2, '0')}-${endDate.day.toString().padLeft(2, '0')}";
-    Map<String, dynamic> taskData = {
-      'title': title,
-      'endingDate': formattedEndDate,
-    };
-
-    return http.post(
-      Uri.parse('http://10.0.2.2:8080/api/addTask'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(taskData),
-    );
-  }
+  TaskService taskService = TaskService();
 
   @override
   void dispose() {
@@ -89,7 +75,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
               ),
               ElevatedButton(
                   onPressed: () async {
-                    await createTask(nameFieldController.text, selectedDate);
+                    await taskService.createTask(
+                        nameFieldController.text, selectedDate);
                     Navigator.pop(context, true);
                   },
                   child: Text('Dodaj zadanie'))
