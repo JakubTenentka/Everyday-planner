@@ -22,5 +22,7 @@ public class Task {
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Tag> tags = new ArrayList<>();
 
+    Boolean isDone = false;
+
 
 }

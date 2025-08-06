@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -35,8 +36,16 @@ public class TaskController {
     }
 
     @GetMapping("api/getTasks")
-    public ResponseEntity<List<Task>> returnAllTasks(){
-        List<Task> tasks = taskService.returnTasks();
+    public ResponseEntity<List<Task>> returnAllTasks(@RequestParam(value = "isDone", required = false) Boolean isDone){
+        List<Task> tasks = new ArrayList<>();
+        if (isDone == null){
+             tasks = taskService.returnTasks();
+        } else if (isDone == true){
+             tasks = taskService.returnDoneTasks();
+        } else if (isDone == false){
+             tasks = taskService.returnNotDoneTasks();
+        }
+
         if (tasks.isEmpty()){
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }

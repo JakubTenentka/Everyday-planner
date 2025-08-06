@@ -30,6 +30,14 @@ public class TaskService {
       return taskRepository.findAll();
   }
 
+  public List<Task> returnNotDoneTasks(){
+        return taskRepository.findByIsDoneFalse();
+  }
+
+  public List<Task> returnDoneTasks(){
+        return taskRepository.findByIsDoneTrue();
+  }
+
   public ResponseEntity<Task> addTagsToTask(Integer id, List<Tag> tags){
         Optional<Task> taskToAddTags = taskRepository.findById(id);
         if(taskToAddTags.isPresent()){

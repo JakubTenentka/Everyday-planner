@@ -8,9 +8,17 @@ class TaskService {
   final String baseUrl = 'http://10.0.2.2:8080';
 
   Future<List<Task>> fetchAllTasks() async {
-    final response = await http.get(
-      Uri.parse('$baseUrl/api/getTasks'),
-    );
+    bool? isDone =
+        false; //TU MOŻNA AKTUALNIE STEROWAĆ WYŚWIETLANIEM TASKÓW ZROBIONYCH/NIEZROBIONYCH
+    Uri uri;
+
+    if (isDone == null) {
+      uri = Uri.parse('$baseUrl/api/getTasks'); // brak parametru
+    } else {
+      uri = Uri.parse('$baseUrl/api/getTasks?isDone=$isDone'); // true lub false
+    }
+
+    final response = await http.get(uri);
     if (response.statusCode == 200) {
       List<dynamic> jsonList = jsonDecode(response.body);
       List<Task> tasks = jsonList
