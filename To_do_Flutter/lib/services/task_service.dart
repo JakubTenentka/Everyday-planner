@@ -11,9 +11,9 @@ class TaskService {
     Uri uri;
 
     if (isDone == null) {
-      uri = Uri.parse('$baseUrl/api/getTasks'); // brak parametru
+      uri = Uri.parse('$baseUrl/api/getTasks');
     } else {
-      uri = Uri.parse('$baseUrl/api/getTasks?isDone=$isDone'); // true lub false
+      uri = Uri.parse('$baseUrl/api/getTasks?isDone=$isDone');
     }
 
     final response = await http.get(uri);
@@ -46,5 +46,13 @@ class TaskService {
       },
       body: jsonEncode(taskData),
     );
+  }
+
+  Future<http.Response> markCompletion(int id, bool isDone) async {
+    final response = await http.patch(
+      Uri.parse('$baseUrl/api/updateTaskStatus/$id?status=$isDone'),
+      headers: {'Content-Type': 'application/json'},
+    );
+    return response;
   }
 }

@@ -31,29 +31,33 @@ class _WelcomePageState extends State<WelcomePage> {
     _futureDoneTasks = taskService.fetchAllTasks(true);
   }
 
+  void _handleMarkingTask() {
+    _refreshTasks();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppbarWidget(title: 'Twoje zadania'),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Center(
-          child: Column(
-            children: [
-              ElevatedButton(
-                onPressed: () async {
-                  final result = await Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AddTaskPage()),
-                  );
-                  if (result == true) {
-                    _refreshTasks();
-                  }
-                },
-                child: Text('Dodaj zadanie'),
-              ),
-              SingleChildScrollView(
-                child: FutureBuilder(
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AddTaskPage()),
+                    );
+                    if (result == true) {
+                      _refreshTasks();
+                    }
+                  },
+                  child: Text('Dodaj zadanie'),
+                ),
+                FutureBuilder(
                   future: _futureNotDoneTasks,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
@@ -77,9 +81,12 @@ class _WelcomePageState extends State<WelcomePage> {
                       return Column(
                         children: List.generate(tasks.length, (index) {
                           return TaskCardWidget(
+                            id: tasks[index].id,
                             taskTitle: tasks[index].title,
                             endingDate: tasks[index].endingDate,
                             tags: tasks[index].tags,
+                            isDone: tasks[index].isDone,
+                            onMarkingTask: _handleMarkingTask,
                           );
                         }),
                       );
@@ -89,46 +96,49 @@ class _WelcomePageState extends State<WelcomePage> {
                     return const CircularProgressIndicator();
                   },
                 ),
-              ),
-              ExpansionTile(title: Text('Zrobione'), children: [
-                FutureBuilder(
-                  future: _futureDoneTasks,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      final tasks = snapshot.data!;
-                      if (tasks.isEmpty) {
-                        return Column(
-                          children: [
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            Center(
-                              child: Text(
-                                'Brak ukończonych zadań',
-                                style: TextStyle(fontSize: 18),
-                                textAlign: TextAlign.end,
+                ExpansionTile(title: Text('Zrobione'), children: [
+                  FutureBuilder(
+                    future: _futureDoneTasks,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        final tasks = snapshot.data!;
+                        if (tasks.isEmpty) {
+                          return Column(
+                            children: [
+                              SizedBox(
+                                height: 10.0,
                               ),
-                            ),
-                          ],
-                        );
-                      }
-                      return Column(
-                        children: List.generate(tasks.length, (index) {
-                          return TaskCardWidget(
-                            taskTitle: tasks[index].title,
-                            endingDate: tasks[index].endingDate,
-                            tags: tasks[index].tags,
+                              Center(
+                                child: Text(
+                                  'Brak ukończonych zadań',
+                                  style: TextStyle(fontSize: 18),
+                                  textAlign: TextAlign.end,
+                                ),
+                              ),
+                            ],
                           );
-                        }),
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
-                    }
-                    return const CircularProgressIndicator();
-                  },
-                ),
-              ])
-            ],
+                        }
+                        return Column(
+                          children: List.generate(tasks.length, (index) {
+                            return TaskCardWidget(
+                              id: tasks[index].id,
+                              taskTitle: tasks[index].title,
+                              endingDate: tasks[index].endingDate,
+                              tags: tasks[index].tags,
+                              isDone: tasks[index].isDone,
+                              onMarkingTask: _handleMarkingTask,
+                            );
+                          }),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      }
+                      return const CircularProgressIndicator();
+                    },
+                  ),
+                ])
+              ],
+            ),
           ),
         ),
       ),

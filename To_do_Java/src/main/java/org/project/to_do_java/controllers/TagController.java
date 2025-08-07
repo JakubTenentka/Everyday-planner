@@ -24,7 +24,7 @@ public class TagController {
     public ResponseEntity<List<Tag>> returnAllTags(){
         List<Tag> tags = tagService.returnAllTags();
         if(tags.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         return ResponseEntity.status(HttpStatus.OK).body(tags);
     }

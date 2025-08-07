@@ -47,7 +47,7 @@ public class TaskController {
         }
 
         if (tasks.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         return ResponseEntity.status(HttpStatus.OK).body(tasks);
     }
@@ -55,6 +55,11 @@ public class TaskController {
     @PostMapping("/api/addTagsToTask/{taskId}")
     public ResponseEntity<Task> addTagsToTask(@PathVariable Integer taskId, @RequestBody List<Tag> tags){
         return taskService.addTagsToTask(taskId,tags);
+    }
+
+    @PatchMapping("api/updateTaskStatus/{taskid}")
+    public ResponseEntity<Void> updateTaskStatus(@PathVariable Integer taskid, @RequestParam("status") boolean status){
+        return taskService.updateIsDone(taskid, status);
     }
 
     }

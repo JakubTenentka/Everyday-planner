@@ -1,24 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:to_do_flutter/model/tag_class.dart';
+import 'package:to_do_flutter/services/task_service.dart';
 
 class TaskCardWidget extends StatefulWidget {
   const TaskCardWidget(
       {super.key,
+      required this.id,
       required this.taskTitle,
       required this.endingDate,
-      required this.tags});
+      required this.tags,
+      required this.isDone,
+      required this.onMarkingTask});
 
   final String taskTitle;
   final DateTime endingDate;
   final List<Tag> tags;
+  final int id;
+  final bool isDone;
+  final VoidCallback onMarkingTask;
 
   @override
   State<TaskCardWidget> createState() => _TaskCardWidgetState();
 }
 
 class _TaskCardWidgetState extends State<TaskCardWidget> {
-  bool? isTaskchecked = false;
+  TaskService taskService = TaskService();
+  late bool? isTaskchecked = widget.isDone;
 
   @override
   Widget build(BuildContext context) {
@@ -69,13 +78,30 @@ class _TaskCardWidgetState extends State<TaskCardWidget> {
                 ],
               ),
               Checkbox(
-                value: isTaskchecked,
-                onChanged: (bool? value) {
-                  setState(() {
-                    isTaskchecked = value;
-                  });
-                },
-              ),
+                  value: isTaskchecked,
+                  onChanged: (bool? value) async {
+                    if (value != null) {
+                      setState(() {
+                        isTaskchecked = value;
+                      });
+                      try {
+                        final http.Response response =
+                            await taskService.markCompletion(widget.id, value);
+
+                        if (response.statusCode == 204) {
+                          widget.onMarkingTask();
+                        } else {
+                          setState(() {
+                            isTaskchecked = !value;
+                          });
+                        }
+                      } catch (e) {
+                        setState(() {
+                          isTaskchecked = !value;
+                        });
+                      }
+                    }
+                  })
             ],
           ),
         ),

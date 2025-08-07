@@ -51,4 +51,16 @@ public class TaskService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
   }
+
+    public ResponseEntity<Void> updateIsDone(Integer taskid, boolean isDone) {
+        Optional<Task> foundTask = taskRepository.findById(taskid);
+        if (foundTask.isPresent()){
+            Task taskToUpdate = foundTask.get();
+            taskToUpdate.setIsDone(isDone);
+            taskRepository.save(taskToUpdate);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 }
