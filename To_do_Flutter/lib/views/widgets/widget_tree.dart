@@ -15,6 +15,7 @@ class WidgetTree extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: ValueListenableBuilder(
         valueListenable: selectedpageNotifier,
         builder: (context, selectedPage, child) {

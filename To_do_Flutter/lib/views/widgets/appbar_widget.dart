@@ -13,7 +13,8 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
         title,
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
-      backgroundColor: Colors.lime,
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
     );
   }
 

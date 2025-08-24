@@ -65,12 +65,18 @@ class _TaskCardWidgetState extends State<TaskCardWidget> {
                         padding:
                             EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         decoration: ShapeDecoration(
-                          color: Color.fromARGB(230, 111, 91, 70),
-                          shape: StadiumBorder(),
+                          color: Theme.of(context).colorScheme.primaryContainer,
+                          shape: StadiumBorder(
+                              side: BorderSide(
+                            color: Theme.of(context).colorScheme.outline,
+                          )),
                         ),
                         child: Text(
                           tag.tagName,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onPrimaryContainer),
                         ),
                       );
                     }).toList(),

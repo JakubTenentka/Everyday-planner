@@ -15,7 +15,9 @@ class TagWidget extends StatelessWidget {
           child: Center(
               child: Text(
                   style: TextStyle(
-                      fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 16.0),
                   tagName)),
         ),
       ),
