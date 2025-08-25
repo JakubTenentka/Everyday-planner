@@ -42,12 +42,17 @@ class _AddTaskPageState extends State<AddTaskPage> {
           padding: const EdgeInsets.all(25.0),
           child: Column(
             children: [
+              SizedBox(
+                height: 10.0,
+              ),
               TextField(
                 controller: nameFieldController,
                 decoration: InputDecoration(
                   hintText: 'Nazwa',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15.0),
+                    borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.outline),
                   ),
                 ),
               ),

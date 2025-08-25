@@ -31,6 +31,18 @@ class _TaskCardWidgetState extends State<TaskCardWidget> {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle titleStyle = TextStyle(
+        fontSize: 20.0,
+        fontWeight: FontWeight.bold,
+        fontStyle: FontStyle.italic);
+    if (isTaskchecked == true) {
+      titleStyle = titleStyle.copyWith(
+        decoration: TextDecoration.lineThrough,
+        decorationThickness: 2.5,
+        decorationColor: Theme.of(context).colorScheme.surface,
+      );
+    }
+
     return Container(
       width: double.infinity,
       margin: EdgeInsets.only(top: 15.0),
@@ -45,10 +57,7 @@ class _TaskCardWidgetState extends State<TaskCardWidget> {
                 children: [
                   Text(
                     widget.taskTitle,
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic),
+                    style: titleStyle,
                   ),
                   SizedBox(
                     height: 5.0,
