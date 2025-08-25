@@ -32,13 +32,11 @@
    ```
 
 ## Zrzuty ekranu
-
-<img width="1198" height="2539" alt="Screenshot_20250825_194806" src="https://github.com/user-attachments/assets/1baecae5-6656-46ef-b97f-787abb9852ee" />
-<img width="1198" height="2539" alt="Screenshot_20250825_194942" src="https://github.com/user-attachments/assets/2c0f1bbf-630d-4f6d-8421-65d2f2e44ab0" />
-<img width="1198" height="2539" alt="Screenshot_20250825_194956" src="https://github.com/user-attachments/assets/7bd4de53-c810-4d7f-a790-b54b85226ba1" />
-<img width="1198" height="2539" alt="Screenshot_20250825_195021" src="https://github.com/user-attachments/assets/f2e89624-1a62-435d-a181-2d51ddc55f15" />
-
-
+<img width="320" height="678" alt="dodaj_zadanie_320" src="https://github.com/user-attachments/assets/5af429ce-3fcf-4ca8-a19d-85c182aabea2" />
+<img width="320" height="678" alt="zadania_320" src="https://github.com/user-attachments/assets/cdb5997a-196b-4dc0-aaf3-744a4214deb9" />
+<img width="320" height="678" alt="zadania_ze_zrobionymi_320" src="https://github.com/user-attachments/assets/6e777250-4f4d-4bb3-aeb3-abf3ed63a58c" />
+<img width="320" height="678" alt="tagi_320" src="https://github.com/user-attachments/assets/534ad116-165f-4b84-bc3a-fd5b785cbe1c" />
+<img width="320" height="678" alt="dodawanie_tagu_320" src="https://github.com/user-attachments/assets/11e70450-3270-4b7c-bc55-f5e456f91fbb" />
 
 
 
