@@ -2,8 +2,8 @@
 
 **Everyday planner** to pełnoprawna aplikacja do zarządzania zadaniami, pozwalająca na wygodne organizowanie codziennych obowiązków. Projekt składa się z dwóch niezależnych modułów:
 
-- 📱 **Frontend**: Flutter (`Everyday_planner_Flutter/`)
-- 🌐 **Backend**: Spring Boot (`Everyday_planner_Java/`)
+- 📱 **Frontend**: Flutter (`To_do_Flutter/`)
+- 🌐 **Backend**: Spring Boot (`To_do_Java/`)
 
 ## ✔️ Funkcje 
 
@@ -21,7 +21,7 @@
 
 ### 🖥 Backend (Spring Boot)
 1. Zainstaluj JDK 17+.
-2. Przejdź do katalogu `Everyday_planner_Java/`.
+2. Przejdź do katalogu `To_do_Java/`.
 3. Skonfiguruj połączenie z bazą danych w pliku `application.properties`.
 4. Uruchom serwer backendu poleceniem:
    ```bash
@@ -30,7 +30,7 @@
 
 ### 📱 Frontend (Flutter)
 1. Zainstaluj Flutter SDK.
-2. Przejdź do katalogu `Everyday_planner_Flutter/`.
+2. Przejdź do katalogu `To_do_Flutter/`.
 3. Zainstaluj zależności i uruchom aplikację:
    ```bash
    flutter pub get
@@ -52,8 +52,8 @@ Aplikacja korzysta z architektury kliencko-serwerowej. Frontend (Flutter) komuni
 - Flutter → Spring Boot → Baza danych
 
 Struktura projektu:
-- `Everyday_planner_Flutter/` &ndash; aplikacja mobilna
-- `Everyday_planner_Java/` &ndash; serwer backendowy
+- `To_do_Flutter/` &ndash; aplikacja mobilna
+- `To_do_Java/` &ndash; serwer backendowy
 
 ## Licencja
 
