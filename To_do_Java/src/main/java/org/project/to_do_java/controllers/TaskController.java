@@ -1,5 +1,7 @@
 package org.project.to_do_java.controllers;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.project.to_do_java.model.Tag;
 import org.project.to_do_java.model.Task;
 import org.project.to_do_java.services.TagService;
@@ -35,7 +37,7 @@ public class TaskController {
         return taskService.addTask(task);
     }
 
-    @GetMapping("api/getTasks")
+    @GetMapping("/api/getTasks")
     public ResponseEntity<List<Task>> returnAllTasks(@RequestParam(value = "isDone", required = false) Boolean isDone){
         List<Task> tasks = new ArrayList<>();
         if (isDone == null){
@@ -57,9 +59,14 @@ public class TaskController {
         return taskService.addTagsToTask(taskId,tags);
     }
 
-    @PatchMapping("api/updateTaskStatus/{taskid}")
+    @PatchMapping("/api/updateTaskStatus/{taskid}")
     public ResponseEntity<Void> updateTaskStatus(@PathVariable Integer taskid, @RequestParam("status") boolean status){
         return taskService.updateIsDone(taskid, status);
+    }
+
+    @DeleteMapping("/api/deleteTask/{taskId}")
+    public ResponseEntity<Void> deleteTask(@PathVariable Integer taskId){
+        return taskService.deleteTask(taskId);
     }
 
     }

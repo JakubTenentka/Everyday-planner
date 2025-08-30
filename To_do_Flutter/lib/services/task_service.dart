@@ -55,4 +55,12 @@ class TaskService {
     );
     return response;
   }
+
+  Future<http.Response> deleteTask(int id) async {
+    final response = await http.delete(
+      Uri.parse('$baseUrl/api/deleteTask/$id'),
+      headers: {'Content-Type': 'application/json'},
+    );
+    return response;
+  }
 }

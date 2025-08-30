@@ -35,6 +35,16 @@ class _WelcomePageState extends State<WelcomePage> {
     _refreshTasks();
   }
 
+  void _handleDismissTask(DismissDirection direction, String id) async {
+    try {
+      await taskService.deleteTask(int.parse(id));
+      SnackBar(content: Text('Usunięto zadanie'));
+      _refreshTasks();
+    } catch (e) {
+      print('Error deleting task: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,6 +97,7 @@ class _WelcomePageState extends State<WelcomePage> {
                             tags: tasks[index].tags,
                             isDone: tasks[index].isDone,
                             onMarkingTask: _handleMarkingTask,
+                            ondismissed: _handleDismissTask,
                           );
                         }),
                       );
@@ -127,6 +138,7 @@ class _WelcomePageState extends State<WelcomePage> {
                               tags: tasks[index].tags,
                               isDone: tasks[index].isDone,
                               onMarkingTask: _handleMarkingTask,
+                              ondismissed: _handleDismissTask,
                             );
                           }),
                         );

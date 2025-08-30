@@ -63,4 +63,13 @@ public class TaskService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+    public ResponseEntity<Void> deleteTask(Integer taskId){
+        Optional<Task> taskToDelete = taskRepository.findById(taskId);
+        if(taskToDelete.isPresent()){
+            taskRepository.deleteRelations(taskId);
+            taskRepository.deleteById(taskId);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return null;
+    }
 }
