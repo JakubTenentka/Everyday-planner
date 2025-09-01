@@ -1,5 +1,6 @@
 package org.project.to_do_java.services;
 
+import org.project.to_do_java.exceptions.TaskNotFoundException;
 import org.project.to_do_java.model.Tag;
 import org.project.to_do_java.model.Task;
 import org.project.to_do_java.repositories.TaskRepository;
@@ -48,7 +49,7 @@ public class TaskService {
             taskRepository.save(foundTask);
             return ResponseEntity.status(HttpStatus.CREATED).body(foundTask);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new TaskNotFoundException();
         }
   }
 
@@ -60,7 +61,7 @@ public class TaskService {
             taskRepository.save(taskToUpdate);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new TaskNotFoundException();
         }
     }
     public ResponseEntity<Void> deleteTask(Integer taskId){
@@ -70,6 +71,6 @@ public class TaskService {
             taskRepository.deleteById(taskId);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
-        return null;
+        throw new TaskNotFoundException();
     }
 }
