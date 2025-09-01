@@ -1,5 +1,6 @@
 package org.project.to_do_java.exceptions;
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,6 +16,12 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ErrorResponse handleTaskNotFoundException(TaskNotFoundException exception){
         return new ErrorResponse(exception.getMessage());
+    }
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleNotValidConstraints(ConstraintViolationException exception){
+        return new ErrorResponse(exception.getConstraintViolations().iterator().next().getMessage());
     }
 }
