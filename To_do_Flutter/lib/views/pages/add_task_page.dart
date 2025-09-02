@@ -122,9 +122,15 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   }),
               ElevatedButton(
                 onPressed: () async {
-                  //TODO Naprawić niedodawanie tasków które nie mają tagu!!
-                  await taskService.createTask(
+                  final String? response = await taskService.createTask(
                       nameFieldController.text, selectedDate, selectedTagIds);
+                  if (response == null) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(const SnackBar(content: Text('Dodano')));
+                  } else {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text(response)));
+                  }
                   Navigator.pop(context, true);
                 },
                 child: Text('Dodaj zadanie'),

@@ -1,5 +1,6 @@
 package org.project.to_do_java.controllers;
 
+import jakarta.validation.Valid;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.project.to_do_java.model.Tag;
@@ -29,7 +30,7 @@ public class TaskController {
     }
 
     @PostMapping("/api/addTask")
-    public ResponseEntity<Task> addTask (@RequestBody Task task, @RequestParam("tagIds") Set<Integer> tagIds) {
+    public ResponseEntity<Task> addTask (@Valid @RequestBody Task task, @RequestParam(value = "tagIds", required = false) Set<Integer> tagIds) {
         if (tagIds != null && !tagIds.isEmpty()) {
             List<Tag> tags = tagService.returnTagsByIds(tagIds);
             task.setTags(tags);

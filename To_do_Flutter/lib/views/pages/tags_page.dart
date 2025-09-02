@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:to_do_flutter/services/tag_service.dart';
 import 'package:to_do_flutter/views/widgets/appbar_widget.dart';
 import '../../model/tag_class.dart';
@@ -105,10 +104,15 @@ class _TagsPageState extends State<TagsPage> {
                 onPressed: () async {
                   Navigator.of(dialogContext).pop();
                   try {
-                    final http.Response response =
-                        await tagService.createTag(newTagName!);
-                    if (response.statusCode == 201) {
+                    final String? response =
+                        await tagService.createTag(newTagName ?? "");
+                    if (response == null) {
                       _refreshTags();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Dodano')));
+                    } else {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(response)));
                     }
                   } catch (e) {
                     print(e);

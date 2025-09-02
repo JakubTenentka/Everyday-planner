@@ -1,5 +1,6 @@
 package org.project.to_do_java.controllers;
 
+import jakarta.validation.Valid;
 import org.project.to_do_java.model.Tag;
 import org.project.to_do_java.services.TagService;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class TagController {
     }
 
     @PostMapping("api/addTag")
-    public ResponseEntity<Tag> addTag(@RequestBody Tag tag){
+    public ResponseEntity<Tag> addTag(@Valid @RequestBody Tag tag){
         return tagService.addTag(tag);
     }
 }

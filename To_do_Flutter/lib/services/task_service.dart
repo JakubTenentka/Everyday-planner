@@ -30,8 +30,8 @@ class TaskService {
     }
   }
 
-  Future<http.Response> createTask(
-      String title, DateTime endDate, Set<int> tagIds) {
+  Future<String?> createTask(
+      String title, DateTime endDate, Set<int> tagIds) async {
     String formattedEndDate =
         "${endDate.year.toString().padLeft(4, '0')}-${endDate.month.toString().padLeft(2, '0')}-${endDate.day.toString().padLeft(2, '0')}";
     Map<String, dynamic> taskData = {
@@ -39,13 +39,28 @@ class TaskService {
       'endingDate': formattedEndDate,
     };
     String tagParams = tagIds.map((id) => 'tagIds=$id').join('&');
-    return http.post(
+    final response = await http.post(
       Uri.parse('http://10.0.2.2:8080/api/addTask?$tagParams'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(taskData),
     );
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return null; // null = brak błędu
+    }
+
+    try {
+      final decoded = jsonDecode(response.body);
+      if (decoded is Map) {
+        return decoded['message']?.toString() ??
+            decoded['error']?.toString() ??
+            'Błąd (${response.statusCode})';
+      }
+      return 'Błąd (${response.statusCode})';
+    } catch (_) {
+      return 'Błąd (${response.statusCode})';
+    }
   }
 
   Future<http.Response> markCompletion(int id, bool isDone) async {
