@@ -1,6 +1,8 @@
 package org.project.to_do_java.controllers;
 
 import jakarta.validation.Valid;
+import org.project.to_do_java.converter.TagConverter;
+import org.project.to_do_java.dto.TagDto;
 import org.project.to_do_java.model.Tag;
 import org.project.to_do_java.services.TagService;
 import org.springframework.http.HttpStatus;
@@ -11,27 +13,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class TagController {
 
     private final TagService tagService;
+    private final TagConverter tagConverter;
 
-    public TagController(TagService tagService) {
+    public TagController(TagService tagService, TagConverter tagConverter) {
         this.tagService = tagService;
+        this.tagConverter = tagConverter;
     }
 
     @GetMapping("api/getTags")
-    public ResponseEntity<List<Tag>> returnAllTags(){
+    public ResponseEntity<List<TagDto>> returnAllTags(){
         List<Tag> tags = tagService.returnAllTags();
         if(tags.isEmpty()){
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(tags);
+        return ResponseEntity.status(HttpStatus.OK).body(tags.stream().map(tagConverter::convertToDto).collect(Collectors.toList()));
     }
 
     @PostMapping("api/addTag")
-    public ResponseEntity<Tag> addTag(@Valid @RequestBody Tag tag){
+    public ResponseEntity<Tag> addTag(@Valid @RequestBody TagDto tagDto){
+        Tag tag = tagConverter.convertToEntity(tagDto);
         return tagService.addTag(tag);
     }
 }

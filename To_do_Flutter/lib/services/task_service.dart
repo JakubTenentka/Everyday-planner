@@ -47,7 +47,7 @@ class TaskService {
       body: jsonEncode(taskData),
     );
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      return null; // null = brak błędu
+      return null;
     }
 
     try {
