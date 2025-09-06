@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_flutter/views/pages/shopping_list_page.dart';
 
 class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
   const AppbarWidget({super.key, required this.title});
@@ -15,6 +16,17 @@ class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
       ),
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+      actions: [
+        IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ShoppingListPage()),
+            );
+          },
+          icon: Icon(Icons.shopping_cart),
+        )
+      ],
     );
   }
 
