@@ -36,8 +36,9 @@ public class TagController {
     }
 
     @PostMapping("api/addTag")
-    public ResponseEntity<Tag> addTag(@Valid @RequestBody TagDto tagDto){
+    public ResponseEntity<TagDto> addTag(@Valid @RequestBody TagDto tagDto){
         Tag tag = tagConverter.convertToEntity(tagDto);
-        return tagService.addTag(tag);
+        Tag addedTag = tagService.addTag(tag);
+        return ResponseEntity.status(HttpStatus.CREATED).body(tagConverter.convertToDto(addedTag));
     }
 }

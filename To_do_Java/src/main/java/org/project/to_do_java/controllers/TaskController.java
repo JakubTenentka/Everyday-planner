@@ -35,13 +35,14 @@ public class TaskController {
     }
 
     @PostMapping("/api/addTask")
-    public ResponseEntity<Task> addTask (@Valid @RequestBody TaskDto taskDto, @RequestParam(value = "tagIds", required = false) Set<Integer> tagIds) {
+    public ResponseEntity<TaskDto> addTask (@Valid @RequestBody TaskDto taskDto, @RequestParam(value = "tagIds", required = false) Set<Integer> tagIds) {
         Task task = taskConverter.convertToEntity(taskDto);
         if (tagIds != null && !tagIds.isEmpty()) {
             List<Tag> tags = tagService.returnTagsByIds(tagIds);
             task.setTags(tags);
         }
-        return taskService.addTask(task);
+        Task savedTask = taskService.addTask(task);
+        return ResponseEntity.status(HttpStatus.CREATED).body(taskConverter.convertToDto(savedTask));
     }
 
     @GetMapping("/api/getTasks")
@@ -62,19 +63,22 @@ public class TaskController {
     }
 
     @PostMapping("/api/addTagsToTask/{taskId}")
-    public ResponseEntity<Task> addTagsToTask(@PathVariable Integer taskId, @RequestBody List<TagDto> tagsDto){
+    public ResponseEntity<TaskDto> addTagsToTask(@PathVariable Integer taskId, @RequestBody List<TagDto> tagsDto){
         List<Tag> tags = tagsDto.stream().map(tagConverter::convertToEntity).collect(Collectors.toList());
-        return taskService.addTagsToTask(taskId,tags);
+        Task updatedTask = taskService.addTagsToTask(taskId,tags);
+        return ResponseEntity.status(HttpStatus.OK).body(taskConverter.convertToDto(updatedTask));
     }
 
     @PatchMapping("/api/updateTaskStatus/{taskid}")
-    public ResponseEntity<Void> updateTaskStatus(@PathVariable Integer taskid, @RequestParam("status") boolean status){
-        return taskService.updateIsDone(taskid, status);
+    public ResponseEntity<TaskDto> updateTaskStatus(@PathVariable Integer taskid, @RequestParam("status") boolean status){
+        Task updatedTask = taskService.updateIsDone(taskid, status);
+        return ResponseEntity.status(HttpStatus.OK).body(taskConverter.convertToDto(updatedTask));
     }
 
     @DeleteMapping("/api/deleteTask/{taskId}")
     public ResponseEntity<Void> deleteTask(@PathVariable Integer taskId){
-        return taskService.deleteTask(taskId);
+         taskService.deleteTask(taskId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     }

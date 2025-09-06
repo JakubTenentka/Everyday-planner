@@ -19,10 +19,11 @@ public class TagService {
     public List<Tag> returnAllTags(){
        return tagRepository.findAll();
     }
-    public ResponseEntity<Tag> addTag(Tag tag){
-        Tag savedTag = tagRepository.save(tag);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedTag);
+
+    public Tag addTag(Tag tag){
+        return tagRepository.save(tag);
     }
+
     public List<Tag> returnTagsByIds(Set<Integer> tagIds) {
         return tagRepository.findAllById(tagIds);
     }

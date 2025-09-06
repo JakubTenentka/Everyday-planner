@@ -4,8 +4,6 @@ import org.project.to_do_java.exceptions.TaskNotFoundException;
 import org.project.to_do_java.model.Tag;
 import org.project.to_do_java.model.Task;
 import org.project.to_do_java.repositories.TaskRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
@@ -22,9 +20,8 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-  public ResponseEntity<Task> addTask(Task task){
-       Task savedTask = taskRepository.save(task);
-       return ResponseEntity.status(HttpStatus.CREATED).body(savedTask);
+  public Task addTask(Task task){
+      return taskRepository.save(task);
   }
 
   public List<Task> returnTasks(){
@@ -39,37 +36,34 @@ public class TaskService {
         return taskRepository.findByIsDoneTrue();
   }
 
-  public ResponseEntity<Task> addTagsToTask(Integer id, List<Tag> tags){
+  public Task addTagsToTask(Integer id, List<Tag> tags){
         Optional<Task> taskToAddTags = taskRepository.findById(id);
         if(taskToAddTags.isPresent()){
             Task foundTask = taskToAddTags.get();
             List<Tag> TaskTags = foundTask.getTags();
             TaskTags.addAll(tags);
             foundTask.setTags(TaskTags);
-            taskRepository.save(foundTask);
-            return ResponseEntity.status(HttpStatus.CREATED).body(foundTask);
+            return taskRepository.save(foundTask);
         } else {
             throw new TaskNotFoundException();
         }
   }
 
-    public ResponseEntity<Void> updateIsDone(Integer taskid, boolean isDone) {
+    public Task updateIsDone(Integer taskid, boolean isDone) {
         Optional<Task> foundTask = taskRepository.findById(taskid);
         if (foundTask.isPresent()){
             Task taskToUpdate = foundTask.get();
             taskToUpdate.setIsDone(isDone);
-            taskRepository.save(taskToUpdate);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            return taskRepository.save(taskToUpdate);
         } else {
             throw new TaskNotFoundException();
         }
     }
-    public ResponseEntity<Void> deleteTask(Integer taskId){
+    public void deleteTask(Integer taskId){
         Optional<Task> taskToDelete = taskRepository.findById(taskId);
         if(taskToDelete.isPresent()){
             taskRepository.deleteRelations(taskId);
             taskRepository.deleteById(taskId);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         throw new TaskNotFoundException();
     }
