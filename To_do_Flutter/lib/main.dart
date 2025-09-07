@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:to_do_flutter/views/widgets/widget_tree.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ProviderScope(
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {

@@ -120,7 +120,7 @@ class _TaskCardWidgetState extends State<TaskCardWidget> {
                           final http.Response response = await taskService
                               .markCompletion(widget.id, value);
 
-                          if (response.statusCode == 204) {
+                          if (response.statusCode == 200) {
                             widget.onMarkingTask();
                           } else {
                             setState(() {

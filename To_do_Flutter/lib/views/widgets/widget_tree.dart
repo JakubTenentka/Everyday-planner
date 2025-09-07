@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../data/notifiers.dart';
 import '../pages/tags_page.dart';
-import '../pages/welcome_page.dart';
+import '../pages/tasks_page.dart';
 import 'navbar_widget.dart';
 
 List<Widget> pages = [
