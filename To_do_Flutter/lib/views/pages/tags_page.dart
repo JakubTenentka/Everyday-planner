@@ -1,35 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:to_do_flutter/services/tag_service.dart';
 import 'package:to_do_flutter/views/widgets/appbar_widget.dart';
 import '../../model/tag_class.dart';
+import '../../providers/tags_provider.dart';
 import '../widgets/tag_widget.dart';
 
-class TagsPage extends StatefulWidget {
+class TagsPage extends ConsumerWidget {
   const TagsPage({super.key});
 
   @override
-  State<TagsPage> createState() => _TagsPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final tagServiceAsyncValue = ref.watch(tagServiceProvider);
 
-class _TagsPageState extends State<TagsPage> {
-  late Future<List<Tag>> _futureTags;
-
-  TagService tagService = TagService();
-
-  @override
-  void initState() {
-    super.initState();
-    _futureTags = tagService.fetchAllTags();
-  }
-
-  void _refreshTags() {
-    setState(() {
-      _futureTags = tagService.fetchAllTags();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppbarWidget(title: 'Twoje kategorie'),
       body: FutureBuilder(
