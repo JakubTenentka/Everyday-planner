@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:to_do_flutter/views/pages/shopping_list_page.dart';
+import 'package:to_do_flutter/views/pages/item_page.dart';
 
 class AppbarWidget extends StatelessWidget implements PreferredSizeWidget {
   const AppbarWidget({super.key, required this.title});

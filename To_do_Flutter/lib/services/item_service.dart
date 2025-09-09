@@ -1,32 +1,39 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:to_do_flutter/model/item_class.dart';
 
 class ItemService {
   final String baseUrl = 'http://10.0.2.2:8080';
 
-  // W ItemService
   Future<List<Item>> fetchAllItems() async {
     try {
       final response =
           await http.get(Uri.parse("$baseUrl/api/shopping/getItems"));
-      print('Status odpowiedzi z backendu: ${response.statusCode}');
 
-      print('Surowe ciało odpowiedzi JSON: ${response.body}');
       if (response.statusCode == 200) {
+        print("Response body: ${response.body}");
         List<dynamic> body = jsonDecode(response.body);
-        List<Item> items =
-            body.map((dynamic itemJson) => Item.fromJson(itemJson)).toList();
-        print('Pomyślnie zdeserializowano ${items.length} itemów');
-        return items;
+        return body.map((dynamic itemJson) => Item.fromJson(itemJson)).toList();
       } else {
-        print('Błąd backendu: ${response.statusCode}');
-        return []; // Zwróć pustą listę w przypadku błędu serwera
+        print("Błąd backendu: ${response.statusCode}");
+        return [];
       }
     } catch (e) {
       print('Wyjątek w fetchAllItems: $e');
-      return []; // Zwróć pustą listę w przypadku wyjątku
+      return [];
+    }
+  }
+
+  Future<Item> addItem(Item newItemData) async {
+    final response = await http.post(Uri.parse("$baseUrl/api/shopping/addItem"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(newItemData));
+    if (response.statusCode == 200) {
+      return Item.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to add item');
     }
   }
 }

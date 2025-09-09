@@ -1,14 +1,13 @@
 package org.project.to_do_java.controllers;
 
+import jakarta.validation.Valid;
 import org.project.to_do_java.converter.ShoppingItemConverter;
 import org.project.to_do_java.dto.ShoppingItemDto;
 import org.project.to_do_java.model.ShoppingItem;
 import org.project.to_do_java.services.ShoppingItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,12 +25,19 @@ public class ShoppingItemController {
     }
 
     @GetMapping("/getItems")
-    public ResponseEntity<List<ShoppingItemDto>> returnAllShoppingItems (){
+    public ResponseEntity<List<ShoppingItemDto>> returnAllShoppingItems() {
         List<ShoppingItem> items = shoppingItemService.returnItems();
         if(items.isEmpty()){
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         return ResponseEntity.status(HttpStatus.OK).body(items.stream().map(shoppingItemConverter::convertToDto).collect(Collectors.toList()));
     }
+
+    @PostMapping("/addItem")
+    public ResponseEntity<ShoppingItemDto> addItem(@Valid @RequestBody ShoppingItemDto shoppingItemDto) {
+        ShoppingItem savedItem = shoppingItemService.addItem(shoppingItemConverter.converToEntity(shoppingItemDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(shoppingItemConverter.convertToDto(savedItem));
+    }
+
 
 }

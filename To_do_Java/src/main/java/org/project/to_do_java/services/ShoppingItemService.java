@@ -18,4 +18,8 @@ public class ShoppingItemService {
     public List<ShoppingItem> returnItems() {
         return shoppingItemRepository.findAllByOrderByIsCheckedAsc();
     }
+
+    public ShoppingItem addItem(ShoppingItem shoppingItem) {
+        return shoppingItemRepository.save(shoppingItem);
+    }
 }
