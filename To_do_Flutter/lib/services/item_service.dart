@@ -30,7 +30,7 @@ class ItemService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(newItemData));
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       return Item.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to add item');

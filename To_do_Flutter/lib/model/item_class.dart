@@ -2,13 +2,11 @@ class Item {
   String name;
   bool isChecked;
   int count;
-  bool isEditing;
 
   Item({
     required this.name,
     this.isChecked = false,
     this.count = 1,
-    this.isEditing = false,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) {
@@ -17,5 +15,13 @@ class Item {
       isChecked: json['checked'] as bool? ?? false,
       count: json['count'] as int,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'isChecked': isChecked,
+      'count': count,
+    };
   }
 }
