@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -39,5 +40,11 @@ public class ShoppingItemController {
 
             ShoppingItem savedItem = shoppingItemService.addItem(shoppingItemConverter.converToEntity(shoppingItemDto));
             return ResponseEntity.status(HttpStatus.CREATED).body(shoppingItemConverter.convertToDto(savedItem));
+        }
+
+        @PatchMapping("/checkItem/{ItemId}")
+    public ResponseEntity<Void> CheckItem(@PathVariable String ItemId, @RequestParam("checked") boolean checked) throws Exception {
+            shoppingItemService.checkItem(ItemId, checked);
+            return ResponseEntity.status(HttpStatus.OK).build();
         }
 }

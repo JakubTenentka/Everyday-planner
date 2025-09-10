@@ -9,6 +9,18 @@ class Item {
     this.count = 1,
   });
 
+  Item copyWith({
+    String? name,
+    bool? isChecked,
+    int? count,
+  }) {
+    return Item(
+      name: name ?? this.name,
+      isChecked: isChecked ?? this.isChecked,
+      count: count ?? this.count,
+    );
+  }
+
   factory Item.fromJson(Map<String, dynamic> json) {
     return Item(
       name: json['name'] as String,

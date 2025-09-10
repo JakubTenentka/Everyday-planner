@@ -41,6 +41,19 @@ class ItemNotifier extends StateNotifier<AsyncValue<List<Item>>> {
     }
   }
 
+  Future<void> toggleItemChecked(String itemId, bool isChecked) async {
+    final currentItems = state.valueOrNull ?? [];
+    await _itemService.markCompletion(itemId, isChecked);
+    final updatedItems = currentItems.map((item) {
+      if (item.name == itemId) {
+        return item.copyWith(isChecked: isChecked);
+      }
+      return item;
+    }).toList();
+
+    state = AsyncData(updatedItems);
+  }
+
   Future<void> refreshItems() async {
     await _fetchInitialItems();
   }

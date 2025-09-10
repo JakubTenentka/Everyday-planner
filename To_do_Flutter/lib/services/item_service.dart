@@ -38,4 +38,13 @@ class ItemService {
       throw Exception('Failed to add item');
     }
   }
+
+  Future<http.Response> markCompletion(String id, bool isDone) async {
+    final response = await http.patch(
+      Uri.parse('$baseUrl/api/shopping/checkItem/$id?checked=$isDone'),
+      headers: {'Content-Type': 'application/json'},
+    );
+    // TODO poprawić rzucanie błędów tu i w backendzie
+    return response;
+  }
 }

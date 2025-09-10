@@ -7,6 +7,7 @@ import org.project.to_do_java.repositories.ShoppingItemRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -28,6 +29,18 @@ public class ShoppingItemService {
             return shoppingItemRepository.save(shoppingItem);
         }
         throw new ItemDuplicateException();
+
+    }
+
+    public void checkItem(String itemId, boolean checked) throws Exception {
+        Optional<ShoppingItem> foundItem = shoppingItemRepository.findById(itemId);
+        if (foundItem.isPresent()){
+            ShoppingItem itemToUpdate = foundItem.get();
+            itemToUpdate.setChecked(checked);
+            shoppingItemRepository.save(itemToUpdate);
+        } else {
+            throw new Exception("Nie znaleziono itemu");
+        }
 
     }
 }

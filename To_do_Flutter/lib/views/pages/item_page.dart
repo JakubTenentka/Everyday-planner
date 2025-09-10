@@ -53,8 +53,11 @@ class ShoppingListPage extends ConsumerWidget {
                                 leading: Checkbox(
                                   value: item.isChecked,
                                   onChanged: (bool? value) {
-                                    // TODO Zaznaczanie zrobienia taska
-                                    ref.read(itemProvider.notifier);
+                                    if (value != null) {
+                                      ref
+                                          .read(itemProvider.notifier)
+                                          .toggleItemChecked(item.name, value);
+                                    }
                                   },
                                 ),
                                 title: Text(item.name),
