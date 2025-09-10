@@ -31,4 +31,12 @@ public class GlobalExceptionHandler {
                 .orElse("Validation error");
         return new ErrorResponse(msg);
     }
+
+    @ExceptionHandler(ItemDuplicateException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseBody
+    public ErrorResponse handleItemDuplicateException(ItemDuplicateException exception){
+        return new ErrorResponse(exception.getMessage());
+    }
+
 }

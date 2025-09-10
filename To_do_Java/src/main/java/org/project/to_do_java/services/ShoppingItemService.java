@@ -1,10 +1,13 @@
 package org.project.to_do_java.services;
 
+import org.project.to_do_java.exceptions.ItemDuplicateException;
+import org.project.to_do_java.exceptions.TaskNotFoundException;
 import org.project.to_do_java.model.ShoppingItem;
 import org.project.to_do_java.repositories.ShoppingItemRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ShoppingItemService {
@@ -20,6 +23,11 @@ public class ShoppingItemService {
     }
 
     public ShoppingItem addItem(ShoppingItem shoppingItem) {
-        return shoppingItemRepository.save(shoppingItem);
+        Optional<ShoppingItem> isfound = shoppingItemRepository.findById(shoppingItem.getName());
+        if (isfound.isEmpty()){
+            return shoppingItemRepository.save(shoppingItem);
+        }
+        throw new ItemDuplicateException();
+
     }
 }

@@ -32,6 +32,8 @@ class ItemService {
         body: jsonEncode(newItemData));
     if (response.statusCode == 201) {
       return Item.fromJson(jsonDecode(response.body));
+    } else if (response.statusCode == 409) {
+      throw Exception(response.body);
     } else {
       throw Exception('Failed to add item');
     }

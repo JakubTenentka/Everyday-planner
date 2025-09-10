@@ -29,8 +29,9 @@ class ItemNotifier extends StateNotifier<AsyncValue<List<Item>>> {
     }
   }
 
-  Future<void> addItem(Item newItemData) async {
+  Future<void> addItem(String name) async {
     final currentStateValue = state.valueOrNull ?? [];
+    Item newItemData = Item(name: name);
     try {
       final Item addedItem = await _itemService.addItem(newItemData);
       final updatedList = [...currentStateValue, addedItem];

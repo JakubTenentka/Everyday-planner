@@ -3,6 +3,7 @@ package org.project.to_do_java.controllers;
 import jakarta.validation.Valid;
 import org.project.to_do_java.converter.ShoppingItemConverter;
 import org.project.to_do_java.dto.ShoppingItemDto;
+import org.project.to_do_java.exceptions.ItemDuplicateException;
 import org.project.to_do_java.model.ShoppingItem;
 import org.project.to_do_java.services.ShoppingItemService;
 import org.springframework.http.HttpStatus;
@@ -35,9 +36,8 @@ public class ShoppingItemController {
 
     @PostMapping("/addItem")
     public ResponseEntity<ShoppingItemDto> addItem(@Valid @RequestBody ShoppingItemDto shoppingItemDto) {
-        ShoppingItem savedItem = shoppingItemService.addItem(shoppingItemConverter.converToEntity(shoppingItemDto));
-        return ResponseEntity.status(HttpStatus.CREATED).body(shoppingItemConverter.convertToDto(savedItem));
-    }
 
-
+            ShoppingItem savedItem = shoppingItemService.addItem(shoppingItemConverter.converToEntity(shoppingItemDto));
+            return ResponseEntity.status(HttpStatus.CREATED).body(shoppingItemConverter.convertToDto(savedItem));
+        }
 }
