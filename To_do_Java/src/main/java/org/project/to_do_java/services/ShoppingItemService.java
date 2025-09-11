@@ -1,6 +1,7 @@
 package org.project.to_do_java.services;
 
 import org.project.to_do_java.exceptions.ItemDuplicateException;
+import org.project.to_do_java.exceptions.ItemNotFound;
 import org.project.to_do_java.exceptions.TaskNotFoundException;
 import org.project.to_do_java.model.ShoppingItem;
 import org.project.to_do_java.repositories.ShoppingItemRepository;
@@ -42,5 +43,16 @@ public class ShoppingItemService {
             throw new Exception("Nie znaleziono itemu");
         }
 
+    }
+
+    public void updateCount(String itemId, int count) throws ItemNotFound {
+        Optional<ShoppingItem> foundItem = shoppingItemRepository.findById(itemId);
+        if (foundItem.isPresent()){
+            ShoppingItem itemToUpdate = foundItem.get();
+            itemToUpdate.setCount(count);
+            shoppingItemRepository.save(itemToUpdate);
+        } else {
+            throw new ItemNotFound("Nie znaleziono itemu");
+        }
     }
 }

@@ -47,4 +47,10 @@ public class ShoppingItemController {
             shoppingItemService.checkItem(ItemId, checked);
             return ResponseEntity.status(HttpStatus.OK).build();
         }
+
+        @PatchMapping("/updateCount/{ItemId}")
+    public ResponseEntity<Void> UpdateCount(@PathVariable String ItemId, @RequestParam("count") int count)  {
+        shoppingItemService.updateCount(ItemId, count);
+        return ResponseEntity.status(HttpStatus.OK).build();
+        }
 }

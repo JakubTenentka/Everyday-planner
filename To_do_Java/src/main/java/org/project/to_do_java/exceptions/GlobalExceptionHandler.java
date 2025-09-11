@@ -39,4 +39,13 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(exception.getMessage());
     }
 
+    @ExceptionHandler(ItemNotFound.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ErrorResponse handleItemNotFoundException(ItemNotFound exception){
+        return new ErrorResponse(exception.getMessage());
+    }
+
+
+
 }

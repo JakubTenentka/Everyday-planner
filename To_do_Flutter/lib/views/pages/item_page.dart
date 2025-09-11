@@ -68,10 +68,10 @@ class ShoppingListPage extends ConsumerWidget {
                                       icon: Icon(Icons.remove),
                                       onPressed: item.count > 0
                                           ? () {
-                                              //TODO Zmniejszanie ilości produktu
-                                              /*setState(() {
-                                      item.count--;
-                                    });*/
+                                              ref
+                                                  .read(itemProvider.notifier)
+                                                  .changeItemCount(
+                                                      item.name, false);
                                             }
                                           : null,
                                     ),
@@ -82,10 +82,9 @@ class ShoppingListPage extends ConsumerWidget {
                                     IconButton(
                                       icon: Icon(Icons.add),
                                       onPressed: () {
-                                        // TODO Zwiększanie ilości produktu
-                                        /*setState(() {
-                                      item.count++;
-                                    });*/
+                                        ref
+                                            .read(itemProvider.notifier)
+                                            .changeItemCount(item.name, true);
                                       },
                                     ),
                                   ],

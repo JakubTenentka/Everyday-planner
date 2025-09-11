@@ -11,15 +11,12 @@ class ItemService {
           await http.get(Uri.parse("$baseUrl/api/shopping/getItems"));
 
       if (response.statusCode == 200) {
-        print("Response body: ${response.body}");
         List<dynamic> body = jsonDecode(response.body);
         return body.map((dynamic itemJson) => Item.fromJson(itemJson)).toList();
       } else {
-        print("Błąd backendu: ${response.statusCode}");
         return [];
       }
     } catch (e) {
-      print('Wyjątek w fetchAllItems: $e');
       return [];
     }
   }
@@ -42,6 +39,15 @@ class ItemService {
   Future<http.Response> markCompletion(String id, bool isDone) async {
     final response = await http.patch(
       Uri.parse('$baseUrl/api/shopping/checkItem/$id?checked=$isDone'),
+      headers: {'Content-Type': 'application/json'},
+    );
+    // TODO poprawić rzucanie błędów tu i w backendzie
+    return response;
+  }
+
+  Future<http.Response> updateCount(int count, String itemId) async {
+    final response = await http.patch(
+      Uri.parse('$baseUrl/api/shopping/updateCount/$itemId?count=$count'),
       headers: {'Content-Type': 'application/json'},
     );
     // TODO poprawić rzucanie błędów tu i w backendzie

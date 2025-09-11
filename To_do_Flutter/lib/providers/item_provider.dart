@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:to_do_flutter/model/item_class.dart';
 import 'package:to_do_flutter/services/item_service.dart';
@@ -14,6 +16,8 @@ final itemProvider =
 
 class ItemNotifier extends StateNotifier<AsyncValue<List<Item>>> {
   final ItemService _itemService;
+
+  final Map<String, Timer> _debounceTimers = {};
 
   ItemNotifier(this._itemService) : super(const AsyncValue.loading()) {
     _fetchInitialItems();
@@ -52,6 +56,49 @@ class ItemNotifier extends StateNotifier<AsyncValue<List<Item>>> {
     }).toList();
 
     state = AsyncData(updatedItems);
+  }
+
+  void changeItemCount(String itemId, bool isAdded) {
+    state = state.whenData((items) {
+      return items.map((item) {
+        if (item.name == itemId) {
+          if (isAdded == true) {
+            return item.copyWith(count: item.count + 1);
+          } else if (isAdded == false) {
+            return item.copyWith(count: item.count - 1);
+          }
+        }
+        return item;
+      }).toList();
+    });
+
+    _debounceTimers[itemId]?.cancel();
+    _debounceTimers[itemId] = Timer(const Duration(seconds: 2), () {
+      final currentItemsFromState = state.valueOrNull;
+      if (currentItemsFromState == null) {
+        return;
+      }
+
+      final currentItem = currentItemsFromState.firstWhere(
+          (i) => i.name == itemId,
+          orElse: () => Item(name: "error_not_found", count: -1));
+
+      if (currentItem.name != "error_not_found") {
+        _itemService
+            .updateCount(currentItem.count, currentItem.name)
+            .then((_) {})
+            .catchError((error, stackTrace) {
+          throw Error();
+        });
+      } else {}
+    });
+  }
+
+  @override
+  void dispose() {
+    _debounceTimers.forEach((_, timer) => timer.cancel());
+    _debounceTimers.clear();
+    super.dispose();
   }
 
   Future<void> refreshItems() async {
