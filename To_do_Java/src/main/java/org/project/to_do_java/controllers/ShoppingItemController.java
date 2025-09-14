@@ -53,4 +53,10 @@ public class ShoppingItemController {
         shoppingItemService.updateCount(ItemId, count);
         return ResponseEntity.status(HttpStatus.OK).build();
         }
+
+        @DeleteMapping("/deleteAll")
+    public ResponseEntity<Void> deleteAllItems(){
+        shoppingItemService.deleteAllItems();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
 }

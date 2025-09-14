@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart';
 import 'package:to_do_flutter/model/item_class.dart';
 import 'package:to_do_flutter/services/item_service.dart';
 
@@ -92,6 +93,17 @@ class ItemNotifier extends StateNotifier<AsyncValue<List<Item>>> {
         });
       } else {}
     });
+  }
+
+  Future<void> clearAllItems() async {
+    try {
+      Response response = await _itemService.deleteAllItems();
+      if (response.statusCode == 204) {
+        state = const AsyncValue.data([]);
+      }
+    } catch (e, stackTrace) {
+      state = AsyncValue.error(e, stackTrace);
+    }
   }
 
   @override

@@ -53,4 +53,12 @@ class ItemService {
     // TODO poprawić rzucanie błędów tu i w backendzie
     return response;
   }
+
+  Future<http.Response> deleteAllItems() async {
+    final response = await http.delete(
+      Uri.parse('$baseUrl/api/shopping/deleteAll'),
+      headers: {'Content-Type': 'application/json'},
+    );
+    return response;
+  }
 }

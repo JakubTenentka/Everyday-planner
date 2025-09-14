@@ -13,6 +13,15 @@ class ShoppingListPage extends ConsumerWidget {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Lista Zakupów'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                ref.read(itemProvider.notifier).clearAllItems();
+              },
+              icon: Icon(Icons.cleaning_services),
+              tooltip: 'Usuń wszystkie produkty',
+            ),
+          ],
         ),
         body: itemListAsyncProvider.when(
             data: (items) {

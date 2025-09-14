@@ -55,4 +55,8 @@ public class ShoppingItemService {
             throw new ItemNotFound("Nie znaleziono itemu");
         }
     }
+
+    public void deleteAllItems() {
+        shoppingItemRepository.deleteAll();
+    }
 }
