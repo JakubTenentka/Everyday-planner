@@ -56,6 +56,16 @@ class ItemNotifier extends StateNotifier<AsyncValue<List<Item>>> {
       return item;
     }).toList();
 
+    updatedItems.sort((a, b) {
+      if (a.isChecked == b.isChecked) {
+        return 0;
+      } else if (a.isChecked) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
+
     state = AsyncData(updatedItems);
   }
 

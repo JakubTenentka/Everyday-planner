@@ -69,7 +69,17 @@ class ShoppingListPage extends ConsumerWidget {
                                     }
                                   },
                                 ),
-                                title: Text(item.name),
+                                title: Text(
+                                  item.name,
+                                  style: TextStyle(
+                                    decoration: item.isChecked
+                                        ? TextDecoration.lineThrough
+                                        : TextDecoration.none,
+                                    color: item.isChecked
+                                        ? Colors.grey[600]
+                                        : null,
+                                  ),
+                                ),
                                 trailing: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
